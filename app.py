@@ -9,8 +9,6 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from oauth2client.service_account import ServiceAccountCredentials
 
-
-
 #LIVE TEST#
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
