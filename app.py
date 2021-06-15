@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from selenium import webdriver
 from oauth2client.service_account import ServiceAccountCredentials
 
+
 #LIVE TEST#
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
@@ -24,6 +25,7 @@ creds_dict["private_key"] = creds_dict["private_key"].replace("\\\\n", "\n")
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scopes)
 client = gspread.authorize(creds)
 #LIVE TEST#
+
 
 '''
 
