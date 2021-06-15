@@ -11,7 +11,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 
 
-'''
 #LIVE TEST#
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
@@ -27,13 +26,14 @@ creds_dict["private_key"] = creds_dict["private_key"].replace("\\\\n", "\n")
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scopes)
 client = gspread.authorize(creds)
 #LIVE TEST#
-'''
 
+'''
 #LOCAL TEST#
 scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
 creds = ServiceAccountCredentials.from_json_keyfile_name('ucc-pahang.json', scope)
 client = gspread.authorize(creds)
 #LOCAL TEST#
+'''
 
 
 spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/14vFutdJuHcszQKIpAcqyQ106AtBSebeghrRxTp9ittQ")
@@ -44,8 +44,8 @@ hoshas_ava=[]
 
 class WhatsappBot:
     def __init__(self):
-        #self.bot = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-        self.bot = webdriver.Chrome()
+        self.bot = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+        #self.bot = webdriver.Chrome()
 
     def url(self):
         bot = self.bot
