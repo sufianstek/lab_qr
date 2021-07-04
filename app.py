@@ -6,17 +6,10 @@ import json
 import gspread
 import pprint
 from datetime import datetime, timedelta
-from selenium import webdriver
 from oauth2client.service_account import ServiceAccountCredentials
 
 
 #LIVE TEST#
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-
 scopes = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
 json_creds = os.getenv("GOOGLE_SHEETS_CREDS_JSON")
 
@@ -34,66 +27,60 @@ scope = ["https://spreadsheets.google.com/feeds","https://www.googleapis.com/aut
 creds = ServiceAccountCredentials.from_json_keyfile_name('ucc-pahang.json', scope)
 client = gspread.authorize(creds)
 #LOCAL TEST#
+
 '''
 
+date_times = (datetime.now() + timedelta(hours=8)).strftime("%d/%m/%Y")
 
-spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/14vFutdJuHcszQKIpAcqyQ106AtBSebeghrRxTp9ittQ")
-sheet = spreadsheet.sheet1
+###SUKPA###
+spreadsheet_sukpa = client.open_by_url("https://docs.google.com/spreadsheets/d/1ILr17LgncRwNmGYmztu-QFdhp7MtOEm1Nnq2QORI3_I")
+sukpa_sh = spreadsheet_sukpa.sheet1
 
-hoshas_cap=[]
-hoshas_ava=[]
+sukpa_input = sukpa_sh.row_values(20)
 
-class WhatsappBot:
-    def __init__(self):
-        self.bot = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-        #self.bot = webdriver.Chrome()
+sukpa_input[0]= date_times
 
-    def url(self):
-        bot = self.bot
-        bot.get('http://appshoshas.moh.gov.my/bedwatcher/view/index.php')
-        #startup = WebDriverWait(bot,50).until(lambda bot: )
-        #try:
-        total_hoshas= int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[7]/td[4]").text)
-        time.sleep(3)
-        icu2A_hoshas= int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[1]/td[4]").text)
-        time.sleep(3)
-        icu2B_hoshas= int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[2]/td[4]").text)
-        time.sleep(3)
-        icu_hoshas = icu2A_hoshas+icu2B_hoshas
-        gen_hoshas=total_hoshas-icu_hoshas
-        time.sleep(3)
 
-        totalcap_hoshas=int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[7]/td[2]").text)
-        time.sleep(3)
-        icu2A_cap_hoshas=int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[1]/td[2]").text)
-        time.sleep(3)
-        icu2B_cap_hoshas=int(bot.find_element_by_xpath("//table[@id='dataTable']/tbody/tr[2]/td[2]").text)
-        time.sleep(3)
-        icu_cap_hoshas = icu2A_cap_hoshas+icu2B_cap_hoshas
-        gencap_hoshas=totalcap_hoshas-icu_cap_hoshas
+###ILKKM###
+spreadsheet_ilkkm = client.open_by_url("https://docs.google.com/spreadsheets/d/17g4wofsHYsuWBTokyY2G0ipkQsQS-eWWidvAbuN8ugM")
+ilkkm_sh = spreadsheet_ilkkm.sheet1
 
-        bot.quit()
-        
-        hoshas_cap.append([icu_cap_hoshas])
-        hoshas_cap.append([gencap_hoshas])
-        hoshas_ava.append([icu_hoshas])
-        hoshas_ava.append([gen_hoshas])
-        #except:
-         #   bot.quit()
+ilkkm_input = sukpa_sh.row_values(20)
 
-sufian = WhatsappBot()
-sufian.url()
+ilkkm_input[0]= date_times
+
+###UMP###
+spreadsheet_ump = client.open_by_url("https://docs.google.com/spreadsheets/d/1XYYkgr7laJCmynqWt9v-Inom6I9RNJPOEvENr88aNdA")
+ump_sh = spreadsheet_ump.sheet1
+
+ump_input = ump_sh.row_values(20)
+
+ump_input[0]= date_times
+
+
+###IKPKT###
+spreadsheet_ikpkt = client.open_by_url("https://docs.google.com/spreadsheets/d/1AL7AU2uyf4al1kmnyGTE2fALVf5nAMDg7k0ogAvO0Cw")
+ikpkt_sh = spreadsheet_ikpkt.sheet1
+
+ikpkt_input = ikpkt_sh.row_values(20)
+
+ikpkt_input[0]= date_times
 
 
 
-#update HOSHAS
-def hoshas():
-    date_times = (datetime.now() + timedelta(hours=8)).strftime("%d/%m/%Y %H:%M:%S")
-    sheet.update('B26:B27', hoshas_cap)
-    sheet.update('E26:E27', hoshas_ava)
-    sheet.update('F26:F27', [[date_times],[date_times]])
-    print("Success, HOSHAS updated")
+###UCC STATISTICS###
+spreadsheet_uccstats = client.open_by_url("https://docs.google.com/spreadsheets/d/1qUglpzUaioqgCg_PMunjRIq4r0hu9RdcsVBhFazWhyg")
 
-hoshas()
+sukpa_stats_sh = spreadsheet_uccstats.worksheet("sukpa")
+ilkkm_stats_sh = spreadsheet_uccstats.worksheet("ilkkm")
+ump_stats_sh = spreadsheet_uccstats.worksheet("ump")
+ikpkt_stats_sh = spreadsheet_uccstats.worksheet("ikpkt")
+
+sukpa_stats_sh.append_row(sukpa_input)
+ilkkm_stats_sh.append_row(ilkkm_input)
+ump_stats_sh.append_row(ump_input)
+ikpkt_stats_sh.append_row(ikpkt_input)
+print('success')
+
 
 
