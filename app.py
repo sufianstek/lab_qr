@@ -75,9 +75,9 @@ class UCCBot:
         sukpa_discharges = int(bot.find_element_by_xpath("/html/body/div[2]/div/div/div/div/div/div/div/div[2]/div/div/div/div[7]").text)
         time.sleep(5)
 
-        sheet.update('D27', sukpa_available)
-        sheet.update('G27', sukpa_discharges)
-        sheet.update('F27', date_times)
+        sheet.update('D20', sukpa_available)
+        sheet.update('G20', sukpa_discharges)
+        sheet.update('F20', date_times)
 
         print("Success, SUKPA updated")
     
