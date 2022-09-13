@@ -1,5 +1,4 @@
 from email.policy import default
-from enum import auto
 from tkinter import *
 from tkinter import filedialog, StringVar
 from tkinter.constants import X
@@ -17,23 +16,27 @@ from selenium.webdriver.common.keys import Keys
 root= tk.Tk()
 root.title("Lab QR reader")
 
-image_scan = Image.open("img_qr.jpg")
-size = (240, 80)
+image_scan = Image.open("image1.png")
+size = (150, 70)
 image_scan = image_scan.resize(size)
 image_png = ImageTk.PhotoImage(image_scan)
 
 def loading():
     canvas1.itemconfig(label_4, state='normal')
-    canvas1.itemconfig(label_5, state='hidden')
 
 def unloading():
     canvas1.itemconfig(label_4, state='hidden')
-    canvas1.itemconfig(label_5, state='hidden')
 
-def error():
-    canvas1.itemconfig(label_5, state='normal')
 
-def automation(x):
+def process_id(e):
+    loading()
+    if len(e) == 12:
+        json_id = e
+        print('ic')
+    else:
+        e = json.loads(e)
+        json_id = e['id']
+        print('qr')
     browser = webdriver.Firefox()
     browser.get('http://192.168.14.21:8080/apex/f?p=100:101:14910514305442::::')
     time.sleep(3)
@@ -51,35 +54,12 @@ def automation(x):
 
     time.sleep(3)
     pt_id = browser.find_element(By.ID, 'P30101_PID')
-    pt_id.send_keys(x)
+    pt_id.send_keys(json_id)
     
     search_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table[1]/tbody/tr/td[2]/a")
     search_btn.send_keys(Keys.RETURN)
     time.sleep(5)
     browser.quit()
-
-
-def process_id(e):
-    try:
-        loading()
-        e = json.loads(e)
-        json_id = e['id']
-        print('qr')
-        automation(json_id)
-    except:
-        e = str(e)
-        if len(e) == 12:
-            loading()
-            json_id = e
-            print('ic')
-            automation(json_id)
-       
-        else:
-            error()
-            print('error')
-
-
-
 
 def clear_text():
    id_entry.delete(0, END)
@@ -107,10 +87,7 @@ clear_btn = tk.Button(text='Clear', command= lambda : [clear_text(), unloading()
 clearbtn = canvas1.create_window(350, 310, window=clear_btn)
 
 label4 = tk.Label(text='   SUCCESS   ', bg='green', fg='white', font=('helvetica', 12, 'bold'))
-label_4 = canvas1.create_window(250, 350, window=label4, state='hidden')
-
-label5 = tk.Label(text='   NRIC error   ', bg='red', fg='white', font=('helvetica', 12, 'bold'))
-label_5 = canvas1.create_window(250, 350, window=label5, state='hidden')
+label_4 = canvas1.create_window(250, 350, window=label4, state='normal')
 
 id_entry.bind("<Return>", lambda event: process_id(id_entry.get()))
 
