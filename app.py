@@ -36,27 +36,35 @@ def error():
 def automation(x):
     browser = webdriver.Firefox()
     browser.get('http://192.168.14.21:8080/apex/f?p=100:101:14910514305442::::')
-    time.sleep(3)
+    time.sleep(1)
     username = browser.find_element(By.ID, 'P101_USERNAME')
     password = browser.find_element(By.ID, 'P101_PASSWORD')
     username.clear()
     password.clear()
-    username.send_keys('ANE3')
-    password.send_keys('ane3123')
+    username.send_keys('900120065911')
+    password.send_keys('*1234A')
     password.send_keys(Keys.RETURN)
-    time.sleep(3)
+    
+    time.sleep(1)
 
     result_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[1]/td/a")
     result_btn.click()
+    time.sleep(1)
 
-    time.sleep(3)
     pt_id = browser.find_element(By.ID, 'P30101_PID')
     pt_id.send_keys(x)
+    time.sleep(1)
     
     search_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table[1]/tbody/tr/td[2]/a")
     search_btn.send_keys(Keys.RETURN)
-    time.sleep(5)
-    browser.quit()
+    time.sleep(3)
+
+
+    result_table_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[1]/a")
+    result_table_btn.click()
+
+    time.sleep(20)
+    browser.close()
 
 
 def process_id(e):
@@ -67,9 +75,9 @@ def process_id(e):
         print('qr')
         automation(json_id)
     except:
+        loading()
         e = str(e)
         if len(e) == 12:
-            loading()
             json_id = e
             print('ic')
             automation(json_id)
@@ -111,6 +119,9 @@ label_4 = canvas1.create_window(250, 350, window=label4, state='hidden')
 
 label5 = tk.Label(text='   NRIC error   ', bg='red', fg='white', font=('helvetica', 12, 'bold'))
 label_5 = canvas1.create_window(250, 350, window=label5, state='hidden')
+
+label6 = tk.Label(text='wait 20-30 seconds to reuse function', bg='lightsteelblue',fg='black', font=('helvetica', 10, 'bold'))
+label_6 = canvas1.create_window(250, 380, window=label6, state='normal')
 
 id_entry.bind("<Return>", lambda event: process_id(id_entry.get()))
 
