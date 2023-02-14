@@ -34,37 +34,46 @@ def error():
     canvas1.itemconfig(label_5, state='normal')
 
 def automation(x):
-    browser = webdriver.Firefox()
-    browser.get('http://192.168.14.21:8080/apex/f?p=100:101:14910514305442::::')
-    time.sleep(1)
-    username = browser.find_element(By.ID, 'P101_USERNAME')
-    password = browser.find_element(By.ID, 'P101_PASSWORD')
-    username.clear()
-    password.clear()
-    username.send_keys('900120065911')
-    password.send_keys('*1234A')
-    password.send_keys(Keys.RETURN)
-    
-    time.sleep(1)
+    try:
+        browser = webdriver.Firefox()
+        browser.get('http://192.168.14.21:8080/apex/f?p=100:101:14910514305442::::')
+        time.sleep(1)
+        username = browser.find_element(By.ID, 'P101_USERNAME')
+        password = browser.find_element(By.ID, 'P101_PASSWORD')
+        username.clear()
+        password.clear()
+        username.send_keys('900120065911')
+        password.send_keys('*1234A')
+        browser.find_element(By.ID, 'B15387667762649817').click()
+        time.sleep(2)
+        try:
+            browser.switchTo().alert().accept();
+        except:
+            pass
+        
+        time.sleep(1)
 
-    result_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[1]/td/a")
-    result_btn.click()
-    time.sleep(1)
+        result_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr/td/table/tbody/tr[1]/td/a")
+        result_btn.click()
+        time.sleep(1)
 
-    pt_id = browser.find_element(By.ID, 'P30101_PID')
-    pt_id.send_keys(x)
-    time.sleep(1)
-    
-    search_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table[1]/tbody/tr/td[2]/a")
-    search_btn.send_keys(Keys.RETURN)
-    time.sleep(3)
+        pt_id = browser.find_element(By.ID, 'P30101_PID')
+        pt_id.send_keys(x)
+        time.sleep(1)
+        
+        search_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[1]/td/table/tbody/tr[2]/td/table/tbody/tr/td/table[1]/tbody/tr/td[2]/a")
+        search_btn.send_keys(Keys.RETURN)
+        time.sleep(3)
 
 
-    result_table_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[1]/a")
-    result_table_btn.click()
+        result_table_btn = browser.find_element(By.XPATH, "/html/body/form/table[2]/tbody/tr/td[2]/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr[2]/td/table/tbody/tr[2]/td[1]/a")
+        result_table_btn.click()
 
-    time.sleep(20)
-    browser.close()
+        time.sleep(20)
+        browser.quit()
+    except Exception as e:
+        print(e)
+        browser.quit()
 
 
 def process_id(e):
