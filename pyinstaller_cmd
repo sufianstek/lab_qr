@@ -1,0 +1,2 @@
+
+pyinstaller app.py --onefile --noconsole --hidden-import='PIL._tkinter_finder'
